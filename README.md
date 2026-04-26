@@ -1,29 +1,47 @@
-# Abubaker AI - JavaGoat WhatsApp Bot 🤖
+# Abubaker AI - JavaGoat WhatsApp Agent
 
-A WhatsApp bot powered by [Baileys](https://github.com/WhiskeySockets/Baileys) that connects to the JavaGoat food ordering app via Firebase.
+A full WhatsApp AI Agent powered by [Baileys](https://github.com/WhiskeySockets/Baileys) and Google Gemini AI. Connects to the JavaGoat food ordering app via Firebase.
 
 ## Features
 
+- **AI Chat** – Google Gemini AI for intelligent conversations in Urdu and English
 - **Live Menu** – Fetches the latest menu from Firebase in real-time
-- **Order Flow** – Customers can order food directly via WhatsApp
+- **Smart Ordering** – Full order flow with quantity selection and delivery details
+- **Order Tracking** – Customers can check their order status
 - **Product Images** – Sends product images from Firebase when ordering
-- **Cash on Delivery** – Orders are saved to Firebase with delivery details
+- **Admin Panel** – Admin commands to manage orders and update status
 - **Auto Reconnect** – Automatically reconnects if disconnected
+- **Cancel Support** – Customers can cancel orders mid-flow
 
-## Commands
+## Customer Commands
 
 | Command | Description |
 |---------|-------------|
-| `hi` / `hello` | Welcome message |
-| `menu` | View the live menu |
+| `hi` / `hello` / `salam` | Welcome message |
+| `menu` | View the live menu with prices |
 | `order [dish name]` | Start ordering a dish |
-| `contact` | Get contact info |
+| `my orders` | Check your order status |
+| `cancel` | Cancel current order |
+| `help` | Show all commands |
+| Any message | AI will respond intelligently |
+
+## Admin Commands
+
+Set your WhatsApp number as `ADMIN_NUMBER` to access:
+
+| Command | Description |
+|---------|-------------|
+| `admin orders` | View all orders |
+| `pending orders` | View pending orders only |
+| `update [id] [status]` | Update an order's status |
+| `admin help` | Show admin commands |
 
 ## Setup
 
 ### Prerequisites
 - Node.js 20+
-- A Firebase Realtime Database URL
+- Firebase Realtime Database URL
+- Google Gemini API Key (free)
 
 ### Installation
 
@@ -35,11 +53,19 @@ npm install
 
 ### Configuration
 
-Set the `FIREBASE_URL` environment variable:
+Set these environment variables:
 
 ```bash
-export FIREBASE_URL="https://your-firebase-project.firebaseio.com"
+export FIREBASE_URL="https://your-project.firebaseio.com"
+export GEMINI_API_KEY="your-gemini-api-key"
+export ADMIN_NUMBER="923001234567"   # Your WhatsApp number (with country code, no +)
 ```
+
+### Get Gemini API Key (Free)
+
+1. Go to [Google AI Studio](https://aistudio.google.com/apikey)
+2. Click "Create API Key"
+3. Copy the key
 
 ### Run
 
@@ -47,24 +73,33 @@ export FIREBASE_URL="https://your-firebase-project.firebaseio.com"
 npm start
 ```
 
-Scan the QR code with WhatsApp to connect the bot.
+Scan the QR code with WhatsApp:
+1. Open WhatsApp on your phone
+2. Go to **Settings** > **Linked Devices**
+3. Click **Link a Device**
+4. Scan the QR code shown in terminal
 
-## GitHub Actions
+## GitHub Actions Setup
 
-The bot runs automatically via GitHub Actions. Make sure to add `FIREBASE_URL` as a repository secret:
+The bot runs automatically via GitHub Actions. Add these secrets:
 
-1. Go to **Settings** → **Secrets and variables** → **Actions**
-2. Click **New repository secret**
-3. Name: `FIREBASE_URL`
-4. Value: Your Firebase Realtime Database URL
+1. Go to **Settings** > **Secrets and variables** > **Actions**
+2. Add these secrets:
+
+| Secret | Required | Description |
+|--------|----------|-------------|
+| `FIREBASE_URL` | Yes | Your Firebase Realtime Database URL |
+| `GEMINI_API_KEY` | No | Google Gemini API key (AI chat disabled without it) |
+| `ADMIN_NUMBER` | No | Your WhatsApp number for admin commands |
 
 ## How It Works
 
 1. Customer sends a message on WhatsApp
-2. Bot checks the message and responds accordingly
-3. For orders, bot fetches the live menu from Firebase
-4. Customer provides delivery details
-5. Order is saved to Firebase and appears in the admin panel
+2. Bot checks if it's a command (menu, order, etc.)
+3. If it's a command, processes it directly
+4. If it's general chat, Gemini AI generates a smart response
+5. For orders: shows product image > asks quantity > asks delivery details > saves to Firebase
+6. Orders appear in the JavaGoat admin panel
 
 ## License
 
