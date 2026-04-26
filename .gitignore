@@ -1,0 +1,4 @@
+node_modules/
+session_data/
+.env
+*.log
