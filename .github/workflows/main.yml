@@ -1,13 +1,28 @@
-name: JavaGoat-WhatsApp-Bot on:
-workflow_dispatch: schedule:
-- cron: "0 */5"***
-Jobs: build: runs-on: ubuntu-latest steps:
-- name: Checkout Code
-uses: actions/checkout@v4
-- name: Setup Node.js
-uses: actions/setup-node@v4 with:
-node-version: 20
-- ran: nminstallpendencies
-- name: Start Al Bot env:
-FIREBASE_URL: SIf secrets.FIREBASE_URL H
-run: npm start
+name: JavaGoat-WhatsApp-Bot
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */5 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Start AI Bot
+        env:
+          FIREBASE_URL: ${{ secrets.FIREBASE_URL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ADMIN_NUMBER: ${{ secrets.ADMIN_NUMBER }}
+        run: npm start
