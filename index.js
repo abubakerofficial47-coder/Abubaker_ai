@@ -3,7 +3,7 @@ const qrcode = require('qrcode-terminal');
 const pino = require('pino');
 
 const FIREBASE_URL = process.env.FIREBASE_URL;
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyBlYOsR6pISWQbMb3tWfV0cBeuJk22V9Y4';
 const ADMIN_NUMBER = process.env.ADMIN_NUMBER || '';
 
 const orderStates = {};
