@@ -224,9 +224,9 @@ async function startBot() {
                         name: item.name,
                         price: parseFloat(item.price),
                         img: item.imageUrl || "",
-                        quantity: 1
+                        quantity: orderStates[sender].quantity || 1
                     }],
-                    total: (parseFloat(item.price) + 50).toFixed(2),
+                    total: (parseFloat(item.price) * (orderStates[sender].quantity || 1) + 50).toFixed(2),
                     status: "Placed",
                     method: "Cash on Delivery (WhatsApp)",
                     timestamp: new Date().toISOString()
@@ -372,7 +372,7 @@ async function startBot() {
                 }
 
                 if (text.startsWith('update ')) {
-                    const parts = text.replace('update ', '').split(' ');
+                    const parts = rawText.trim().substring('update '.length).split(' ');
                     const orderId = parts[0];
                     const newStatus = parts.slice(1).join(' ');
                     if (!orderId || !newStatus) {
